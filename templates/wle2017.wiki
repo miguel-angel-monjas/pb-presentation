@@ -1,0 +1,212 @@
+<%!
+import math
+
+def get_site_list (site_list) :
+    if len (site_list) > 0:
+        item_list = list()
+        for site in site_list :
+            item_list.append(u'[[:d:{0}|{0}]] ([[:Category:{1}|{1}]])'.format(site['itemid'], site['name']))
+        return '<br/>'.join(item_list)
+    else:
+        return u''
+
+def get_reg_date (string) :
+    if len(string) == 0 :
+        result = u"(too old, no registration date available)"
+    else :
+        result = u"(registered on {0})".format(string)
+    return result
+    
+def get_steps (n):
+    step_0 = 0
+    step_1 = math.floor(n/3) + int((n%3 != 0))
+    step_2 = 2*math.floor(n/3) + n%3
+    return [step_0, step_1, step_2]
+
+%><!-- WARNING: this page is automatically updated by a (human-operated) bot. Any change you introduce will be overriden by the next automatic edition. If you find any error or want to suggest any enhancement, please, contact Discasto or any member of the Wiki Loves Earth organization team. Thanks!!!-->
+{| align=right
+|[[File:WLE Austria Logo (transparent).svg|200px|link=]]
+|- 
+| style="text-align:center; font-family:arial black; font-size:200%; color:grey" | {{LangSwitch| es=España|ca=Espanya|en=Spain}}&nbsp;&nbsp;&nbsp;
+|}
+
+Welcome to the '''[[Commons:${full_tag}|${tag} Spain ${year}]]''' statistics. Below you will find information about the number of uploaded photographs, the contestants and the [[:en:Site of Community Importance|sites of community importance]] the pictures belong to. Enjoy!!!
+
+== Executive summary ==
+
+* '''Main category''': [[:Category:Images from Wiki Loves Earth ${year} in Spain|Images from Wiki Loves Earth ${year} in Spain]].
+* '''Total (photographs)''': ${images_length}.
+** '''Valid photographs''' (from a site of community importance): ${valid_images_length}.
+% if qi_length != 0:
+** '''Quality Images''': ${qi_length} ([[${gallery_quality_images}|see gallery]]).
+% endif
+* '''Sites of community importance with contributions''': ${wle_sites_length}.
+* '''Contestants''': ${authors_length}.
+** '''New contestants''' (registered less that 15 days before their first contribution to ${tag}): ${new_uploaders_length}.
+
+== Participants ==
+'''${authors_length}''' contestants participated in ${full_tag} ${year}. The graphs below show the 13 top contibutors and number of sites of community importance they have contributed to.
+
+[[File:${tag} ${year} in Spain - Top authors.png|frameless|center|x500px|Top 13 contributors to Wiki Loves Earth ${year} in Spain by valid uploads.]]
+<br clear="all"/>
+[[File:${tag} ${year} in Spain - Top authors by site of community importance.png|frameless|center|x500px|Top 14 contributors to Wiki Loves Earth ${year} in Spain by site of community importance.]]
+<br clear="all"/>
+[[File:${tag} ${year} in Spain - Top authors (2).png|frameless|center|x500px|Top 14 contributors to Wiki Loves Earth ${year} in Spain (summary).]]
+<br clear="all"/>
+
+Next, the age distribution of contestants (time from registration to the first contribution to the contest):
+
+[[File:${tag} 2017 in Spain - Contestant age.png|frameless|center|x500px|Wiki Loves Earth 2017 in Spain: Contestant age. Time from registration to first contribution to contest]]
+<br clear="all"/>
+
+Finally, the list of all the contestants, their number of uploaded photographs and the number of sites of community importance they have contributed to:
+
+<center>
+{| class="wikitable sortable" style="width:85%; font-size:89%; margin-top:0.5em;"
+|- valign="middle"
+! style = "width: 25%;" | Contestant <small>(contributions: <u>gallery</u>, <u>category</u>)</small><br/><small>(registration time)</small>
+! style = "width: 15%;" | Photographs (total)
+! style = "width: 15%;" | Photographs (from a site of community importance)
+! style = "width: 45%;" | Distinct sites of community importance by contestant<br/>(<u>code</u>, <u>name</u>)
+% for index, row in authors_df.iterrows() :
+|-
+| {{u|${row['contestant']}}} ([[${base}/Images from Wiki Loves Earth ${year} in Spain by ${row['contestant']}|gallery]], [[:Category:Images from Wiki Loves Earth ${year} in Spain by ${row['contestant']}|category]])<br/><small>${get_reg_date(row['registration_string'])}</small>
+| align="center" | ${row['images']}
+| align="center" | ${row['valid_images']}
+| align="center" | ${row['sites']}<br/>${get_site_list(row['site_list'])}
+% endfor
+|-
+! Total: ${authors_length} contestants
+! align="center" | ${images_length} photographs
+! align="center" | ${valid_images_length} photographs (from a site of community importance)
+! align="center" | ${wle_sites_length} sites of community importance
+|}
+</center>
+
+Access to all contestants' galleries can be found [[Commons:Wiki Loves Earth/${year}/User Gallery|here]].
+
+===New contributors===
+'''${len(new_uploaders)}''' contestants registered less than 15 days before their first contribution to the contest. They have provided '''${new_uploaders_sum}''' photographs.
+
+{| border = 0
+|-
+% for author, item in new_uploaders.iteritems() :
+% if loop.index in get_steps(len(new_uploaders)):
+|
+% endif
+*{{u|${author}}} (${item} pictures)
+% endfor
+|}
+
+== Daily contributions ==
+The figure below shows the number of daily contributions:
+
+[[File:${tag} ${year} in Spain - Uploads by day.png|frameless|x600px|center|Daily contributions.]]
+<br clear="all"/>
+
+== Sites of community importance ==
+${full_tag} ${year} has generated material for '''${wle_sites_length} sites of community importance'''. The graph below shows the 12 top sites of community importance the contestants have contributed to.
+
+[[File:${tag} ${year} in Spain - Top sites.png|frameless|x700px|center|Top 12 sites of community importance in Wiki Loves Earth ${year} in Spain by valid uploads.]]
+<br clear="all"/>
+
+The following graphs show the distribution of photographs and sites of community importance by autonomous community.
+
+[[File:${tag} ${year} in Spain - Photographs by autonomous community.png|frameless|x550px|center|Photographs by autonomous community in Wiki Loves Earth ${year} in Spain.]]
+<br clear="all"/>
+
+[[File:${tag} ${year} in Spain - Sites of community importance by autonomous community.png|frameless|x550px|center|Sites of community importance by autonomous community in Wiki Loves Earth ${year} in Spain]]
+<br clear="all"/>
+
+Next, the list of all the sites of community importance, the autonomous community they take place in and the number of uploaded photographs for each site of community importance:
+
+<center>
+{| class="wikitable sortable" style="width:65%; font-size:89%; margin-top:0.5em;"
+|- valign="middle"
+! Site of community importance<br/>(<u>Commons category</u>, <u>Wikidata item</u>)
+! Autonomous community
+! Uploaded photographs
+% for index, row in images_per_site_df.iterrows() :
+|-
+| [[:Category:${row['name']}|${row['name']}]]<br/>[[:d:${row['code']}|${row['code']}]]
+| align="center" | ${row['aut_com']}
+| align="center" | [[:Category:Images of a site of community importance with code ${row['code']} from ${full_tag} ${year} in Spain|${row['count']}]]
+% endfor
+|-
+! '''Total''': ${wle_sites_length}/${site_length} sites of community importance (${round(100*wle_sites_length/float(site_length), 2)}%) 
+! ${aut_coms} aut. communities
+! ${valid_images_length} photographs
+|}
+</center>
+
+=== Sites of community importance map ===
+<mapframe text="Sites of community importance" latitude="39" longitude="-4" zoom="5" width="800" height="600" align="center"> 
+${map}
+</mapframe>
+
+==Sites of community importance coverage==
+Coverage statistics measure the number of wikidata items and commons categories of the sites of community importance.
+<br clear="all"/>
+<center>
+{| class="wikitable sortable" style="width:60%; font-size:89%; margin-top:0.5em;"
+|- valign="middle"
+! Autonomous Community
+! Number of sites of community importance
+! Sites of community importance<br/> with a Commons category
+! Sites of community importance<br/> with an image
+% for index, row in coverage_df[:-1].iterrows() :
+|-
+! ${index}
+| align="center" | ${row['aut_com']}
+| align="center" bgcolor="${row['cat_color']}" | ${row['commons_cat']} (${row['category_percentage']}%)
+| align="center" bgcolor="${row['image_color']}" | ${row['image']} (${row['image_percentage']}%)
+% endfor
+% for index, row in coverage_df[-1:].iterrows() :
+|-
+! ${index}
+! align="center" | ${row['aut_com']}
+| align="center" bgcolor="${row['cat_color']}" | '''${row['commons_cat']}''' ('''${row['category_percentage']}%''')
+| align="center" bgcolor="${row['image_color']}" | '''${row['image']}''' ('''${row['image_percentage']}%''')
+% endfor
+|}
+</center>
+
+==Image use==
+The graph below shows the number of photographs from ${full_tag} ${year} in Spain used in any WM project ('''${total_unique}'''):
+
+[[File:${tag} ${year} in Spain - Unique photographs used in WMF projects.png|frameless|x550px|center|Unique photographs from Wiki Loves Earth ${year} in Spain used in WMF projects: top 12 projects.]]
+<br clear="all"/>
+
+Next, the actual number of uses in the projects ('''${usages_df['usages'].sum()}'''):
+[[File:${tag} ${year} in Spain - Uses of photographs in WMF projects.png|frameless|x550px|center|Uses of photographs from Wiki Loves Earth ${year} in Spain in WMF projects: top 12 projects]]
+<br clear="all"/>
+
+Finally, the actual statistics of uses of ${tag} ${year} in Spain photographs in WMF projects <small>(only uses in Principal, Project, Portal and Annex namespaces are considered)</small>:
+<br clear="all"/>
+<center>
+{| class="wikitable sortable" style="width:50%; font-size:89%; margin-top:0.5em;"
+|- valign="middle"
+! width="50%" | Wikimedia project
+! width="25%" | WLF ${year} images used
+! width="25%" | Articles with WLF ${year} images
+% for index, row in usages_df.iterrows() :
+|-
+| ${index}
+| align="center" | ${row['unique']}
+| align="center" | ${row['usages']}
+% endfor
+|-
+| Any Wikimedia project
+| align="center" | '''${total_unique}''' (${round(100.0*total_unique/images_length, 2)}%)
+| align="center" | '''${usages_df['usages'].sum()}'''
+
+|}
+</center>
+
+
+------------
+
+&nbsp;&nbsp;<small>''Statistics page generation date'': {{subst:CURRENTMONTHNAME}} {{subst:CURRENTDAY}}, {{subst:CURRENTYEAR}}.</small>
+
+[[Category:Wiki Loves Earth ${year} in Spain| Stats]]
+[[Category:Statistics of Wiki Loves Earth in Spain| ${year}]]
